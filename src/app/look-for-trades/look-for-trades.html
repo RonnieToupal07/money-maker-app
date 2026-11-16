@@ -1,0 +1,205 @@
+<div class="page">
+  <header class="top">
+    <div>
+      <h1>Look For Trades</h1>
+      <div class="range">
+        @if (result(); as r) {
+          Last run {{ r.asOf | ct }} · judged on the candle that closed {{ candleClose() | ct }}
+        } @else {
+          Entry and exit check on the latest completed 30-min candle, using the same rules as the SMS alerts
+        }
+      </div>
+    </div>
+    <button class="btn primary" type="button" (click)="run()" [disabled]="running()">
+      {{ running() ? 'Looking…' : 'Look For Trades' }}
+    </button>
+  </header>
+
+  @if (error(); as message) {
+    <section class="panel"><p class="error" role="alert">{{ message }}</p></section>
+  }
+
+  @if (running()) {
+    <section class="panel"><div class="loading-note">Scanning every ticker's latest completed 30-min candle and your open trades… this can take a minute.</div></section>
+  }
+
+  @if (result(); as r) {
+    <section class="stats">
+      <div class="stat"><span class="label">Free Cash</span><span class="value">{{ r.cashAvailable | usd }}</span></div>
+      <div class="stat">
+        <span class="label">Open Positions</span>
+        <span class="value" [class.loss]="r.openCount >= r.maxConcurrentOpen">{{ r.openCount }} / {{ r.maxConcurrentOpen }}</span>
+      </div>
+      <div class="stat"><span class="label">Candle Closed</span><span class="value">{{ candleClose() | ct }}</span></div>
+      <div class="stat">
+        <span class="label">Entries</span>
+        <span class="value" [class.profit]="counts().enter > 0">{{ counts().enter }}</span>
+      </div>
+      <div class="stat">
+        <span class="label">Exits</span>
+        <span class="value" [class.profit]="exitCount() > 0">{{ exitCount() }}</span>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Exit Criteria · Open Trades</h2>
+      @if (r.exits.length) {
+        <div class="table-scroll">
+          <table class="log">
+            <thead>
+              <tr>
+                <th>Ticker</th>
+                <th>Call</th>
+                <th>Contracts</th>
+                <th>Entry</th>
+                <th>Stock Close</th>
+                <th>Bid / Ask</th>
+                <th>Option Now</th>
+                <th>Unrealized</th>
+                <th>Candles Held</th>
+                <th>Status</th>
+                <th>Why</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (x of r.exits; track x.tradeId) {
+                <tr [class.row-close-win]="x.status === 'exit'">
+                  <td>{{ x.ticker }}</td>
+                  <td>{{ x.strike | usd }} · {{ x.expiration }}</td>
+                  <td>{{ x.contracts }}</td>
+                  <td>{{ x.entryPrice | usd }}</td>
+                  <td>{{ x.price | usd }}</td>
+                  <td>{{ x.bid | usd }} / {{ x.ask | usd }}</td>
+                  <td>{{ x.optionPrice | usd }}</td>
+                  <td>
+                    <span class="pnl" [class.profit]="(x.unrealizedPnl ?? 0) > 0" [class.loss]="(x.unrealizedPnl ?? 0) < 0">{{ x.unrealizedPnl | usd: true }}</span>
+                  </td>
+                  <td>{{ x.barsHeld ?? '—' }} / {{ x.holdBars }}</td>
+                  <td>
+                    @if (x.status === 'exit') {
+                      <span class="badge status-go">Exit · {{ exitLabels[x.exitType!] }}</span>
+                    } @else if (x.status === 'failed') {
+                      <span class="badge status-failed">Failed</span>
+                    } @else {
+                      <span class="badge event-close">Hold</span>
+                    }
+                  </td>
+                  <td class="reasons">
+                    <ul>
+                      @for (reason of x.reasons; track $index) {
+                        <li>{{ reason }}</li>
+                      }
+                    </ul>
+                  </td>
+                  <td>
+                    @if (x.status === 'exit' && openTrade(x)) {
+                      <button class="btn row-btn" type="button" (click)="closeTrade(closeDialog, x)">Close</button>
+                    }
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      } @else {
+        <div class="empty-note">No open trades to check.</div>
+      }
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <h2>Entry Criteria · Every Ticker</h2>
+        <input class="search" type="search" placeholder="Filter ticker" aria-label="Filter ticker" (input)="onSearch($event)" />
+      </div>
+      <div class="filters" role="group" aria-label="Entry status">
+        @for (f of filters; track f.value) {
+          <button type="button" [class.active]="filter() === f.value" [attr.aria-pressed]="filter() === f.value" (click)="filter.set(f.value)">
+            {{ f.label }} <span class="count">{{ counts()[f.value] }}</span>
+          </button>
+        }
+      </div>
+      @if (r.failed.length) {
+        <p class="note">Couldn't fetch {{ r.failed.join(', ') }}</p>
+      }
+      <div class="table-scroll">
+        <table class="log">
+          <thead>
+            <tr>
+              <th>Ticker</th>
+              <th>Close</th>
+              <th>MACD (2 bars ago → prev → now)</th>
+              <th>Armed</th>
+              <th>RSI</th>
+              <th>Upturn</th>
+              <th>Call</th>
+              <th>Entry Price</th>
+              <th>Contracts · Cost</th>
+              <th>Status</th>
+              <th>Why</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (e of entries(); track e.ticker) {
+              <tr [class.row-close-win]="e.status === 'enter'" [class.muted]="e.status === 'no-entry' || e.status === 'failed'">
+                <td>{{ e.ticker }}</td>
+                <td>{{ e.price | usd }}</td>
+                <td>{{ fmt(e.macdPrev2) }} → {{ fmt(e.macdPrev) }} → {{ fmt(e.macd) }}</td>
+                <td>{{ e.macd == null ? '—' : e.armed ? 'Yes' : 'No' }}</td>
+                <td>{{ fmt(e.rsi, 1) }}</td>
+                <td>{{ fmt(e.slope) }}</td>
+                @if (e.signal; as s) {
+                  <td>{{ s.strike != null ? (s.strike | usd) + ' · ' + s.expiration : '—' }}</td>
+                  <td>{{ s.entryPrice | usd }}{{ s.entryPrice != null ? ' (mid)' : '' }}</td>
+                  <td>{{ s.suggestedContracts ?? '—' }} · {{ s.estimatedCost | usd }}</td>
+                } @else {
+                  <td>—</td>
+                  <td>—</td>
+                  <td>—</td>
+                }
+                <td>
+                  @switch (e.status) {
+                    @case ('enter') { <span class="badge status-go">Enter</span> }
+                    @case ('skip') { <span class="badge event-open">Signal · Skipped</span> }
+                    @case ('failed') { <span class="badge status-failed">Failed</span> }
+                    @default { <span class="badge event-close">No entry</span> }
+                  }
+                </td>
+                <td class="reasons">
+                  @if (e.reasons.length) {
+                    <ul>
+                      @for (reason of e.reasons; track $index) {
+                        <li>{{ reason }}</li>
+                      }
+                    </ul>
+                  } @else {
+                    All entry rules met
+                  }
+                </td>
+                <td>
+                  @if (e.signal?.strike != null) {
+                    <button class="btn row-btn" [class.primary]="e.status === 'enter'" type="button" (click)="addTrade(newTradeDialog, e)">
+                      Add Trade
+                    </button>
+                  }
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="12" class="empty-note">No tickers match.</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+  } @else if (!running() && !error()) {
+    <section class="panel">
+      <div class="empty-note">Press Look For Trades to check every ticker's entry criteria and your open trades' exit criteria.</div>
+    </section>
+  }
+
+  <app-close-trade-dialog #closeDialog />
+  <app-new-trade-dialog #newTradeDialog [showButton]="false" />
+</div>

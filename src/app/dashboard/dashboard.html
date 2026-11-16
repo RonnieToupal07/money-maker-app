@@ -1,0 +1,235 @@
+<div class="page">
+  <header class="top">
+    <div>
+      <h1>Money Maker</h1>
+      <div class="range">{{ year }} · {{ trades().length }} trades · {{ stats().open }} open</div>
+    </div>
+    <div class="top-actions">
+      @if (tradingSwitch(); as ts) {
+        <button
+          class="trade-switch"
+          type="button"
+          role="switch"
+          [attr.aria-checked]="ts.enabled"
+          [class.on]="ts.enabled"
+          (click)="toggleAutoTrading()"
+          [disabled]="tradingSwitchSaving()"
+          [title]="ts.envLive ? '' : 'SCHWAB_TRADING isn\'t live in functions/.env, so nothing trades either way'"
+        >
+          <span class="dot" aria-hidden="true"></span>
+          Auto-trading {{ ts.enabled ? 'On' : 'Off' }}{{ ts.envLive ? '' : ' · not live' }}
+        </button>
+      }
+      <button class="theme-toggle" type="button" (click)="cycleTheme()" [attr.aria-label]="'Theme: ' + theme()">
+        {{ theme() === 'system' ? 'Auto' : theme() === 'light' ? 'Light' : 'Dark' }}
+      </button>
+    </div>
+  </header>
+  @if (tradingSwitchError(); as m) {
+    <section class="panel"><div class="empty-note loss">{{ m }}</div></section>
+  }
+
+  <nav class="year-tabs" aria-label="Year">
+    <button class="active">
+      {{ year }}
+      @if (stats().closed) {
+        <span class="yr-pnl" [class.profit]="stats().pnl > 0" [class.loss]="stats().pnl < 0">{{ stats().pnl | usd: true }}</span>
+      }
+    </button>
+  </nav>
+
+  @if (error(); as message) {
+    <section class="panel"><div class="empty-note">{{ message }}</div></section>
+  }
+
+  @let s = stats();
+  <div class="stat-rows">
+  <section class="stats" aria-label="Account">
+    <div class="stat">
+      <span class="label label-row">
+        Cash Available
+        <span class="label-actions">
+          <button
+            class="eye"
+            type="button"
+            (click)="toggleCashHidden()"
+            [attr.aria-label]="cashHidden() ? 'Show cash available' : 'Hide cash available'"
+            [attr.aria-pressed]="!cashHidden()"
+          >
+            <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z" />
+              <circle cx="12" cy="12" r="3" />
+              @if (cashHidden()) {
+                <path d="M3 3l18 18" />
+              }
+            </svg>
+          </button>
+          <app-update-cash-dialog />
+        </span>
+      </span>
+      <span class="value" [class.masked]="cashHidden()">{{ cash() | usd }}</span>
+    </div>
+    <div class="stat">
+      <span class="label label-row">
+        Schwab Value
+        <span class="label-actions">
+          <button
+            class="eye"
+            type="button"
+            (click)="toggleSchwabHidden()"
+            [attr.aria-label]="schwabHidden() ? 'Show Schwab value' : 'Hide Schwab value'"
+            [attr.aria-pressed]="!schwabHidden()"
+          >
+            <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z" />
+              <circle cx="12" cy="12" r="3" />
+              @if (schwabHidden()) {
+                <path d="M3 3l18 18" />
+              }
+            </svg>
+          </button>
+          <button class="sync-link" type="button" (click)="syncSchwab()" [disabled]="schwabSyncing()">
+            {{ schwabSyncing() ? 'Syncing…' : 'Sync' }}
+          </button>
+        </span>
+      </span>
+      @if (schwab(); as a) {
+        <span class="value" [class.masked]="schwabHidden()">{{ a.accountValue | usd }}</span>
+        <span class="sub"><span [class.masked]="schwabHidden()">Cash {{ a.cashAvailable | usd }}</span> · {{ a.syncedAt | ct }}</span>
+        @if (a.refreshExpiresAt != null && a.refreshExpiresAt - now < 36 * 3600_000) {
+          <span class="sub loss">{{ a.refreshExpiresAt < now ? 'Disconnected - reconnect' : 'Reconnect soon' }}</span>
+        }
+      } @else {
+        <span class="value">—</span>
+        <span class="sub">Not connected</span>
+      }
+      @if (schwabMessage(); as m) {
+        <span class="sub">{{ m }}</span>
+      }
+      <button class="btn primary row-btn schwab-connect" type="button" (click)="reconnectSchwab()" [disabled]="schwabReconnecting()">
+        {{ schwabReconnecting() ? 'Opening Schwab…' : schwab() ? 'Reconnect Schwab' : 'Connect Schwab' }}
+      </button>
+    </div>
+  </section>
+  <section class="stats" aria-label="Performance">
+    <div class="stat return-box">
+      <span class="label">Return</span>
+      <dl class="return-lines">
+        <dt>Realized P&amp;L</dt>
+        <dd [class.profit]="s.pnl > 0" [class.loss]="s.pnl < 0">{{ s.pnl | usd: true }}</dd>
+        <dt>Trades Closed</dt>
+        <dd>{{ s.closed }} <span class="sub">({{ s.closed ? (s.winRate | pct) : '—' }} win)</span></dd>
+        <dt>Trades Won</dt>
+        <dd>{{ s.wins }} <span class="sub">(avg <span [class.profit]="s.avgWin > 0">{{ s.wins ? (s.avgWin | usd: true) : '—' }}</span>)</span></dd>
+        <dt>Trades Lost</dt>
+        <dd>{{ s.losses }} <span class="sub">(avg <span [class.loss]="s.avgLoss < 0">{{ s.losses ? (s.avgLoss | usd: true) : '—' }}</span>)</span></dd>
+      </dl>
+    </div>
+    <div class="stat">
+      <span class="label label-row">Fear &amp; Greed <app-fear-greed-dialog /></span>
+      @if (fearGreed(); as f) {
+        <span class="value">{{ f.used ? f.used.value : '—' }}</span>
+        <span class="sub" [class.loss]="f.used?.date !== f.needed">
+          {{ f.used ? f.used.date + ' close' : 'No reading this week' }}{{ f.used?.date !== f.needed ? ' · ' + f.needed + ' missing' : '' }}
+        </span>
+      } @else {
+        <span class="value">—</span>
+      }
+    </div>
+  </section>
+  </div>
+
+  <section class="panel">
+    <app-schwab-positions />
+  </section>
+
+  <section class="panel">
+    <app-blocked-signals />
+  </section>
+
+  <section class="panel">
+    <h2>Account Value</h2>
+    <app-account-chart [series]="balance()" />
+  </section>
+
+  <section class="panel">
+    <div class="panel-head">
+      <h2>Transaction Log <span class="since">since {{ logStart }}</span></h2>
+      <div class="head-actions">
+        <button class="btn" type="button" (click)="lookForTrades()" [disabled]="scanRunning()">
+          {{ scanRunning() ? 'Looking…' : 'Look For Trades' }}
+        </button>
+        <app-new-trade-dialog />
+      </div>
+    </div>
+    @if (loading()) {
+      <div class="loading-note">Loading trades…</div>
+    } @else {
+      <div class="table-scroll">
+        <table class="log">
+          <thead>
+            <tr>
+              <th>Time (CT)</th>
+              <th>Action</th>
+              <th>Ticker</th>
+              <th>Contract</th>
+              <th>Contracts</th>
+              <th>Price</th>
+              <th>Amount</th>
+              <th>P&amp;L</th>
+              <th>Cash After</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (e of transactions(); track e.key) {
+              @let t = e.trade;
+              <tr
+                [class.row-open]="e.action === 'BTO' && t.pnl == null"
+                [class.row-close-win]="e.action === 'STC' && isWin(t)"
+                [class.row-close-loss]="e.action === 'STC' && !isWin(t)"
+              >
+                <td>{{ e.time | ct }}</td>
+                <td>
+                  @if (e.action === 'BTO') {
+                    <span class="badge event-open">BTO{{ t.pnl == null ? ' · open' : '' }}</span>
+                  } @else {
+                    <span class="badge event-close">STC{{ t.exitType ? ' · ' + t.exitType : '' }}</span>
+                  }
+                </td>
+                <td>
+                  {{ t.ticker }}
+                  @if (t.source.startsWith('schwab')) {
+                    <span class="src" title="From Schwab">S</span>
+                  }
+                </td>
+                <td>{{ t.strike | usd }}{{ t.putCall }} · {{ t.exp }}</td>
+                <td>{{ t.contracts }}</td>
+                <td>{{ e.price | usd }}</td>
+                <td>
+                  <span [class.loss]="e.amount < 0" [class.profit]="e.amount > 0">{{ e.amount | usd: true }}</span>
+                </td>
+                <td>
+                  @if (e.action === 'STC') {
+                    <span class="pnl" [class.profit]="(t.pnl ?? 0) > 0" [class.loss]="(t.pnl ?? 0) < 0">{{ t.pnl | usd: true }}</span>
+                  }
+                </td>
+                <td>{{ e.cashAfter | usd }}</td>
+                <td>
+                  @if (e.action === 'BTO' && t.pnl == null) {
+                    <button class="btn row-btn" type="button" (click)="closeDialog.open(t)" [disabled]="!configured">Close</button>
+                  }
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="10" class="empty-note">No trades since {{ logStart }}.</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+    <app-close-trade-dialog #closeDialog />
+  </section>
+</div>

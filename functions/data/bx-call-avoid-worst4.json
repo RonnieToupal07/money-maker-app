@@ -1,0 +1,41 @@
+{
+ "description": "The 4 call indicator groups with the lowest return on margin per year in the skip-9 checkpoint run (groups with 10+ calls), worst first; calls in any of them are skipped (config.bxScoreSizedStrategy.callAvoidFile).",
+ "groups": [
+  {
+   "rank": 49,
+   "label": "80\u2013100",
+   "indicator": "bbPctB",
+   "min": 80,
+   "max": 100,
+   "romAnn": -1.0676,
+   "calls": 12
+  },
+  {
+   "rank": 37,
+   "label": "1.00 to 3.00",
+   "indicator": "macdDaily",
+   "min": 1,
+   "max": 3,
+   "romAnn": -0.7737,
+   "calls": 10
+  },
+  {
+   "rank": 60,
+   "label": "3.5\u20134%",
+   "indicator": "premiumPctOfStock",
+   "min": 3.5,
+   "max": 4,
+   "romAnn": -0.6686,
+   "calls": 13
+  },
+  {
+   "rank": 74,
+   "label": "\u22122% to +2%",
+   "indicator": "alpha21",
+   "min": -2,
+   "max": 2,
+   "romAnn": -0.6534,
+   "calls": 12
+  }
+ ]
+}

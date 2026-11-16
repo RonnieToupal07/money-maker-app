@@ -1,0 +1,234 @@
+<div class="page">
+  <header class="top">
+    <div>
+      <h1>Selling Naked Options</h1>
+      <div class="range">
+        Bx-Trender strategy · separate Schwab account ·
+        @if (account()?.syncedAt; as at) { synced {{ at | ct }} } @else { account not connected yet }
+      </div>
+    </div>
+    <div class="actions">
+      <button class="btn" type="button" (click)="sync()" [disabled]="busy()">Sync Schwab</button>
+      <button class="btn primary" type="button" (click)="scan()" [disabled]="scanning()">{{ scanning() ? 'Scanning…' : 'Scan' }}</button>
+    </div>
+  </header>
+
+  @if (loadError(); as text) {
+    <section class="panel"><p class="error" role="alert">{{ text }}</p></section>
+  }
+  @if (error(); as text) {
+    <section class="panel"><p class="error" role="alert">{{ text }}</p></section>
+  }
+  @if (message(); as text) {
+    <section class="panel"><p class="note" role="status">{{ text }}</p></section>
+  }
+  @for (s of needsChecking(); track s.id) {
+    <section class="panel">
+      <p class="error" role="alert">
+        {{ s.ticker }} {{ s.kind }} order from {{ s.date }}: Schwab didn't confirm it, so it may or may not be live. Check Schwab directly.
+        {{ s.lastError }}
+      </p>
+    </section>
+  }
+
+  @if (confirming(); as c) {
+    <section class="panel confirm" role="alertdialog" aria-label="Confirm order">
+      <p>{{ c.text }}</p>
+      <p class="warn">This places a real order on your Schwab account. Naked options can lose far more than the premium collected.</p>
+      <div class="actions">
+        <button class="btn primary" type="button" (click)="confirm()" [disabled]="busy()">Place order</button>
+        <button class="btn" type="button" (click)="confirming.set(null)">Cancel</button>
+      </div>
+    </section>
+  }
+
+  <section class="stats">
+    <div class="stat"><span class="label">Account Value</span><span class="value">{{ account()?.accountValue | usd }}</span></div>
+    <div class="stat"><span class="label">Available Funds</span><span class="value">{{ account()?.availableFunds | usd }}</span></div>
+    <div class="stat"><span class="label">Margin In Use</span><span class="value">{{ marginInUse() | usd }}</span></div>
+    <div class="stat"><span class="label">Open Trades</span><span class="value">{{ openTrades().length }}</span></div>
+    <div class="stat">
+      <span class="label">Realized P&amp;L</span>
+      <span class="value" [class.profit]="realized() > 0" [class.loss]="realized() < 0">{{ realized() | usd: true }}</span>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Suggested Opens · Today</h2>
+    @if (opens().length) {
+      <div class="table-scroll">
+        <table class="log">
+          <thead>
+            <tr><th>Ticker</th><th>Contract</th><th>Qty</th><th>Mid</th><th>Bid / Ask</th><th>Margin</th><th>Why</th><th>Status</th><th></th></tr>
+          </thead>
+          <tbody>
+            @for (s of opens(); track s.id) {
+              <tr>
+                <td>{{ s.ticker }}</td>
+                <td>{{ s.expiration }} {{ s.strike | usd }}{{ sideLabel(s.direction) }}</td>
+                <td>{{ s.contracts ?? '—' }}</td>
+                <td>{{ s.proposedPrice | usd }}</td>
+                <td>{{ s.bid | usd }} / {{ s.ask | usd }}</td>
+                <td>{{ (s.perContractBp ?? 0) * (s.contracts ?? 0) | usd }}</td>
+                <td class="reasons">{{ s.note }}@if (s.lastError) {<div class="row-error">{{ s.lastError }}</div>}</td>
+                <td><span class="badge" [class.status-go]="s.status === 'filled'" [class.status-failed]="s.status === 'unknown'">{{ statusLabel(s) }}</span></td>
+                <td>
+                  @if (s.status === 'pending') {
+                    <button class="btn row-btn" type="button" (click)="askConfirm(s)" [disabled]="busy() || !s.contracts">Open</button>
+                  } @else if (s.status === 'working') {
+                    <button class="btn row-btn" type="button" (click)="cancelOrder(s)" [disabled]="busy()">Cancel</button>
+                  }
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    } @else {
+      <div class="empty-note">No opens suggested today. The scan runs at 2:30 PM CT on trading days; a put needs an entry score above 850 and a call above −250.</div>
+    }
+  </section>
+
+  <section class="panel">
+    <h2>Open Trades</h2>
+    @if (openTrades().length) {
+      <div class="table-scroll">
+        <table class="log">
+          <thead>
+            <tr><th>Ticker</th><th>Contract</th><th>Qty</th><th>Sold At</th><th title="Option price at the last Schwab sync">Now</th><th title="Premium kept so far, as of the last Schwab sync">% Gain/Loss</th><th>Opened</th><th title="Click for the calculation and Schwab's live requirement">Margin</th><th>Today</th><th></th></tr>
+          </thead>
+          <tbody>
+            @for (t of openTrades(); track t.id) {
+              @let close = closeFor(t);
+              <tr [class.row-close-win]="close?.status === 'pending' && close?.reason !== 'manual'">
+                <td>{{ t.ticker }}</td>
+                <td>{{ t.expiration }} {{ t.strike | usd }}{{ sideLabel(t.direction) }}</td>
+                <td>{{ t.contracts }}</td>
+                <td>{{ t.entryPrice | usd }}</td>
+                <td>{{ markFor(t) | usd }}</td>
+                <td>
+                  @let pct = gainPct(t);
+                  <span class="pnl" [class.profit]="(pct ?? 0) > 0" [class.loss]="(pct ?? 0) < 0">{{ pct | pct: true }}</span>
+                </td>
+                <td>{{ t.entryDate }}</td>
+                <td>
+                  <button class="margin-link" type="button" (click)="marginPopover.open(t)" [attr.aria-label]="'Margin details for ' + t.ticker">
+                    {{ schwabMargin(t) ?? t.buyingPower | usd }}
+                  </button>
+                  @if (schwabMargin(t) != null) {
+                    <span class="src" title="Schwab's requirement from the last sync">S</span>
+                  }
+                </td>
+                <td class="reasons">
+                  @if (t.missingAtSchwab) {
+                    <div class="row-error">Not at Schwab: expired, assigned, or closed elsewhere?</div>
+                  }
+                  @if (close; as c) {
+                    <span class="badge" [class.status-go]="c.status === 'pending'" [class.status-muted]="c.status === 'withdrawn'">{{ reasonLabel(c.reason) }} · {{ statusLabel(c) }}</span>
+                    {{ c.note }}
+                    @if (c.lastError) {<div class="row-error">{{ c.lastError }}</div>}
+                  } @else {
+                    Hold
+                  }
+                </td>
+                <td>
+                  @if (close?.status === 'working') {
+                    <button class="btn row-btn" type="button" (click)="cancelOrder(close!)" [disabled]="busy()">Cancel</button>
+                  } @else if (close?.status === 'pending') {
+                    <button class="btn row-btn" type="button" (click)="askConfirm(close!)" [disabled]="busy()">Close</button>
+                  } @else if (!close || close.status === 'withdrawn') {
+                    <button class="btn row-btn" type="button" (click)="askConfirmClose(t)" [disabled]="busy()">Close</button>
+                  }
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    } @else {
+      <div class="empty-note">No open trades.</div>
+    }
+    <app-margin-popover #marginPopover />
+  </section>
+
+  @if (previewEntries().length) {
+    <section class="panel">
+      <h2>Preview · Would Be Entries</h2>
+      <p class="note">Not suggestions: this scan ran outside the 2:25-3:00 PM CT window, so there's nothing to click yet.</p>
+      <div class="table-scroll">
+        <table class="log">
+          <thead><tr><th>Ticker</th><th>Side</th><th>Bx Peak</th><th>Score</th><th>Stock</th></tr></thead>
+          <tbody>
+            @for (c of previewEntries(); track c.ticker) {
+              <tr><td>{{ c.ticker }}</td><td>{{ sideLabel(c.direction) }}</td><td>{{ c.peakScore.toFixed(1) }}</td><td>{{ scoreText(c) }}</td><td>{{ c.spot | usd }}</td></tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+  }
+
+  @if (blocked().length) {
+    <section class="panel">
+      <h2>Signals Blocked · {{ (preview() ?? lastScan())?.day }}</h2>
+      <div class="table-scroll">
+        <table class="log">
+          <thead><tr><th>Ticker</th><th>Side</th><th>Bx Peak</th><th>Score</th><th>Stock</th><th>Why Not</th></tr></thead>
+          <tbody>
+            @for (c of blocked(); track c.ticker + c.direction) {
+              <tr>
+                <td>{{ c.ticker }}</td>
+                <td>{{ sideLabel(c.direction) }}</td>
+                <td>{{ c.peakScore.toFixed(1) }}</td>
+                <td>{{ scoreText(c) }}</td>
+                <td>{{ c.spot | usd }}</td>
+                <td class="reasons">{{ c.blocked }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+  }
+
+  <section class="panel">
+    <h2>Trade History</h2>
+    @if (closedTrades().length) {
+      <div class="table-scroll">
+        <table class="log">
+          <thead>
+            <tr><th>Ticker</th><th>Contract</th><th>Qty</th><th>Opened</th><th>Closed</th><th>Sold At</th><th>Bought At</th><th>Exit</th><th>P&amp;L</th></tr>
+          </thead>
+          <tbody>
+            @for (t of closedTrades(); track t.id) {
+              <tr>
+                <td>{{ t.ticker }}</td>
+                <td>{{ t.expiration }} {{ t.strike | usd }}{{ sideLabel(t.direction) }}</td>
+                <td>{{ t.openedContracts }}</td>
+                <td>{{ t.entryDate }}</td>
+                <td>{{ t.exitDate }}</td>
+                <td>{{ t.entryPrice | usd }}</td>
+                <td>{{ t.exitPrice | usd }}</td>
+                <td>{{ reasonLabel(t.exitReason) }}</td>
+                <td><span class="pnl" [class.profit]="t.realizedPnl > 0" [class.loss]="t.realizedPnl < 0">{{ t.realizedPnl | usd: true }}</span></td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    } @else {
+      <div class="empty-note">No closed trades yet.</div>
+    }
+  </section>
+
+  @if (events().length) {
+    <section class="panel">
+      <h2>Order Activity</h2>
+      <ul class="events">
+        @for (e of events(); track e.id) {
+          <li><span class="when">{{ e.at | ct }}</span> {{ e.text }}</li>
+        }
+      </ul>
+    </section>
+  }
+</div>

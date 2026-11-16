@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(lsof -iTCP -sTCP:LISTEN -nP)",
+      "Bash(curl -s -m 15 -o /dev/null -w \"schwabConnectUrl: %{http_code}\\\\n\" -X POST -H 'Content-Type: application/json' -d '{\"data\":{}}' https://us-central1-money-maker-ronnie.cloudfunctions.net/schwabConnectUrl)",
+      "Bash(curl -s -m 15 -o /dev/null -w \"syncSchwab \\(known deployed\\): %{http_code}\\\\n\" -X POST -H 'Content-Type: application/json' -d '{\"data\":{}}' https://us-central1-money-maker-ronnie.cloudfunctions.net/syncSchwab)",
+      "Read(//Applications/Google Chrome.app/Contents/MacOS/**)",
+      "Bash(curl -s -m 10 http://localhost:4200/chunk-DNLPSWDE.js)",
+      "Bash(python3 -I -)",
+      "Bash(python3 -I -c ' *)",
+      "Bash(git -C . log --oneline -3 -- data/fear-greed-daily.json)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" https://ronnie-money-maker.web.app/login)",
+      "Bash(curl -s -H \"Referer: https://ronnie-money-maker.web.app/\" -H \"Content-Type: application/json\" \"https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBYBW4EbtWA32LXmR7UN2yoflg0dprmcbU\" -d '{\"email\":\"probe-nobody@example.com\",\"password\":\"x\",\"returnSecureToken\":true}')",
+      "Bash(curl -s \"https://ronnie-money-maker.web.app/\")"
+    ]
+  }
+}

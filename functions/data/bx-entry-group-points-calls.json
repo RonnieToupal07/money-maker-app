@@ -1,0 +1,1108 @@
+{
+ "description": "Every indicator group for Bx-Trender calls with its return on margin per year as points (output/Grouped Entry IndicatorRankings - Calls.md), 'No reading' groups included. An entry's score is the sum of the points of the groups it falls in, one per indicator.",
+ "groups": [
+  {
+   "rank": 1,
+   "label": "Below the lower band",
+   "indicator": "bbPctB",
+   "points": 78.3,
+   "max": 0
+  },
+  {
+   "rank": 2,
+   "label": "No reading",
+   "indicator": "entryRsi90",
+   "points": 70.7,
+   "missing": true
+  },
+  {
+   "rank": 3,
+   "label": "No reading",
+   "indicator": "relSpy90",
+   "points": 70.7,
+   "missing": true
+  },
+  {
+   "rank": 4,
+   "label": "No reading",
+   "indicator": "entryIv",
+   "points": 65.3,
+   "missing": true
+  },
+  {
+   "rank": 5,
+   "label": "Below −2σ",
+   "indicator": "vwap20Sigma",
+   "points": 61.6,
+   "max": -2
+  },
+  {
+   "rank": 6,
+   "label": "0–20",
+   "indicator": "bbPctB",
+   "points": 54.4,
+   "min": 0,
+   "max": 20
+  },
+  {
+   "rank": 7,
+   "label": "5–6%",
+   "indicator": "premiumPctOfStock",
+   "points": 50.4,
+   "min": 5,
+   "max": 6
+  },
+  {
+   "rank": 8,
+   "label": "−3.00 to −1.00",
+   "indicator": "macdDaily",
+   "points": 40.1,
+   "min": -3,
+   "max": -1
+  },
+  {
+   "rank": 9,
+   "label": "−2σ to −1σ",
+   "indicator": "vwap20Sigma",
+   "points": 38.1,
+   "min": -2,
+   "max": -1
+  },
+  {
+   "rank": 10,
+   "label": "2× and up",
+   "indicator": "rvol",
+   "points": 36.9,
+   "min": 2
+  },
+  {
+   "rank": 11,
+   "label": "80 and up",
+   "indicator": "fearGreed",
+   "points": 36.2,
+   "min": 80
+  },
+  {
+   "rank": 12,
+   "label": "−0.15 to −0.05",
+   "indicator": "macdSlopeDaily",
+   "points": 34.5,
+   "min": -0.15,
+   "max": -0.05
+  },
+  {
+   "rank": 13,
+   "label": "SPY above 200, below 50",
+   "indicator": "spyRegime",
+   "points": 28.9,
+   "equals": "above_200"
+  },
+  {
+   "rank": 14,
+   "label": "2σ and up",
+   "indicator": "vwap20Sigma",
+   "points": 24.3,
+   "min": 2
+  },
+  {
+   "rank": 15,
+   "label": "2.5 and up",
+   "indicator": "beta252",
+   "points": 23.3,
+   "min": 2.5
+  },
+  {
+   "rank": 16,
+   "label": "Under 0.5×",
+   "indicator": "rvol",
+   "points": 22.9,
+   "max": 0.5
+  },
+  {
+   "rank": 17,
+   "label": "20–30",
+   "indicator": "fearGreed",
+   "points": 20.2,
+   "min": 20,
+   "max": 30
+  },
+  {
+   "rank": 18,
+   "label": "60–70",
+   "indicator": "ivRankMacd",
+   "points": 19.4,
+   "min": 60,
+   "max": 70
+  },
+  {
+   "rank": 19,
+   "label": "Under −10 pts",
+   "indicator": "relSpy20",
+   "points": 14.1,
+   "max": -10
+  },
+  {
+   "rank": 20,
+   "label": "45–60",
+   "indicator": "fearGreed",
+   "points": 14.1,
+   "min": 45,
+   "max": 60
+  },
+  {
+   "rank": 21,
+   "label": "$3T and up",
+   "indicator": "marketCapSpy",
+   "points": 12.9,
+   "min": 3000000000000
+  },
+  {
+   "rank": 22,
+   "label": "Under −10 pts",
+   "indicator": "relSpy90",
+   "points": 12.1,
+   "max": -10
+  },
+  {
+   "rank": 23,
+   "label": "40–60",
+   "indicator": "stochK52",
+   "points": 11.4,
+   "min": 40,
+   "max": 60
+  },
+  {
+   "rank": 24,
+   "label": "Below −10%",
+   "indicator": "alpha21",
+   "points": 10.4,
+   "max": -10
+  },
+  {
+   "rank": 25,
+   "label": "Under 20",
+   "indicator": "stochK52",
+   "points": 6.9,
+   "max": 20
+  },
+  {
+   "rank": 26,
+   "label": "Above 50, below 200",
+   "indicator": "trend50200",
+   "points": 4.5,
+   "equals": "above50Only"
+  },
+  {
+   "rank": 27,
+   "label": "−30 to −10",
+   "indicator": "ivMinusHv",
+   "points": 4.4,
+   "min": -30,
+   "max": -10
+  },
+  {
+   "rank": 28,
+   "label": "Under −3.00",
+   "indicator": "macdDaily",
+   "points": 0.3,
+   "max": -3
+  },
+  {
+   "rank": 29,
+   "label": "40–60",
+   "indicator": "ivRankMacd",
+   "points": -1.1,
+   "min": 40,
+   "max": 60
+  },
+  {
+   "rank": 30,
+   "label": "No reading",
+   "indicator": "stochK52",
+   "points": -2.2,
+   "missing": true
+  },
+  {
+   "rank": 31,
+   "label": "No reading",
+   "indicator": "beta252",
+   "points": -2.2,
+   "missing": true
+  },
+  {
+   "rank": 32,
+   "label": "No reading",
+   "indicator": "alpha21",
+   "points": -2.2,
+   "missing": true
+  },
+  {
+   "rank": 33,
+   "label": "0.15 and up",
+   "indicator": "macdSlopeDaily",
+   "points": -3.5,
+   "min": 0.15
+  },
+  {
+   "rank": 34,
+   "label": "+2% to +5%",
+   "indicator": "alpha21",
+   "points": -3.7,
+   "min": 2,
+   "max": 5
+  },
+  {
+   "rank": 35,
+   "label": "Below both",
+   "indicator": "trend50200",
+   "points": -3.8,
+   "equals": "belowBoth"
+  },
+  {
+   "rank": 36,
+   "label": "45–50",
+   "indicator": "entryRsi90",
+   "points": -4.4,
+   "min": 45,
+   "max": 50
+  },
+  {
+   "rank": 37,
+   "label": "Under −0.15",
+   "indicator": "macdSlopeDaily",
+   "points": -6.9,
+   "max": -0.15
+  },
+  {
+   "rank": 38,
+   "label": "20 to 30",
+   "indicator": "relSpy90",
+   "points": -7.4,
+   "min": 20,
+   "max": 30
+  },
+  {
+   "rank": 39,
+   "label": "1.25–1.5",
+   "indicator": "beta252",
+   "points": -7.9,
+   "min": 1.25,
+   "max": 1.5
+  },
+  {
+   "rank": 40,
+   "label": "20–25",
+   "indicator": "adx14",
+   "points": -8.1,
+   "min": 20,
+   "max": 25
+  },
+  {
+   "rank": 41,
+   "label": "35–45",
+   "indicator": "rsiSmoothedDaily",
+   "points": -8.5,
+   "min": 35,
+   "max": 45
+  },
+  {
+   "rank": 42,
+   "label": "$1–3T",
+   "indicator": "marketCapSpy",
+   "points": -8.6,
+   "min": 1000000000000,
+   "max": 3000000000000
+  },
+  {
+   "rank": 43,
+   "label": "−5 to 0",
+   "indicator": "relSpy20",
+   "points": -8.9,
+   "min": -5,
+   "max": 0
+  },
+  {
+   "rank": 44,
+   "label": "−10% to −5%",
+   "indicator": "alpha21",
+   "points": -9.6,
+   "min": -10,
+   "max": -5
+  },
+  {
+   "rank": 45,
+   "label": "80% and up",
+   "indicator": "entryIv",
+   "points": -10.2,
+   "min": 80
+  },
+  {
+   "rank": 46,
+   "label": "−10 to 0",
+   "indicator": "ivMinusHv",
+   "points": -10.6,
+   "min": -10,
+   "max": 0
+  },
+  {
+   "rank": 47,
+   "label": "50–60",
+   "indicator": "rsiSmoothedDaily",
+   "points": -11.2,
+   "min": 50,
+   "max": 60
+  },
+  {
+   "rank": 48,
+   "label": "40–50",
+   "indicator": "entryRsi14",
+   "points": -11.6,
+   "min": 40,
+   "max": 50
+  },
+  {
+   "rank": 49,
+   "label": "30–40",
+   "indicator": "entryRsi14",
+   "points": -11.8,
+   "min": 30,
+   "max": 40
+  },
+  {
+   "rank": 50,
+   "label": "25–30%",
+   "indicator": "entryIv",
+   "points": -12.9,
+   "min": 25,
+   "max": 30
+  },
+  {
+   "rank": 51,
+   "label": "Under 0.75",
+   "indicator": "beta252",
+   "points": -13.1,
+   "max": 0.75
+  },
+  {
+   "rank": 52,
+   "label": "SPY above 50, below 200",
+   "indicator": "spyRegime",
+   "points": -13.1,
+   "equals": "above_50"
+  },
+  {
+   "rank": 53,
+   "label": "No reading",
+   "indicator": "trend50200",
+   "points": -13.5,
+   "missing": true
+  },
+  {
+   "rank": 54,
+   "label": "50–60",
+   "indicator": "entryRsi14",
+   "points": -13.9,
+   "min": 50,
+   "max": 60
+  },
+  {
+   "rank": 55,
+   "label": "30–45",
+   "indicator": "fearGreed",
+   "points": -14.2,
+   "min": 30,
+   "max": 45
+  },
+  {
+   "rank": 56,
+   "label": "60–80",
+   "indicator": "bbPctB",
+   "points": -14.4,
+   "min": 60,
+   "max": 80
+  },
+  {
+   "rank": 57,
+   "label": "3.00 and up",
+   "indicator": "macdDaily",
+   "points": -14.4,
+   "min": 3
+  },
+  {
+   "rank": 58,
+   "label": "5 to 10",
+   "indicator": "relSpy20",
+   "points": -14.9,
+   "min": 5,
+   "max": 10
+  },
+  {
+   "rank": 59,
+   "label": "55–60",
+   "indicator": "entryRsi90",
+   "points": -15.6,
+   "min": 55,
+   "max": 60
+  },
+  {
+   "rank": 60,
+   "label": "−1σ to 0",
+   "indicator": "vwap20Sigma",
+   "points": -15.7,
+   "min": -1,
+   "max": 0
+  },
+  {
+   "rank": 61,
+   "label": "0 to 5",
+   "indicator": "relSpy20",
+   "points": -15.8,
+   "min": 0,
+   "max": 5
+  },
+  {
+   "rank": 62,
+   "label": "−10 to 0",
+   "indicator": "relSpy90",
+   "points": -15.9,
+   "min": -10,
+   "max": 0
+  },
+  {
+   "rank": 63,
+   "label": "30–40%",
+   "indicator": "entryIv",
+   "points": -16.6,
+   "min": 30,
+   "max": 40
+  },
+  {
+   "rank": 64,
+   "label": "$200–500B",
+   "indicator": "marketCapSpy",
+   "points": -16.8,
+   "min": 200000000000,
+   "max": 500000000000
+  },
+  {
+   "rank": 65,
+   "label": "20–40",
+   "indicator": "bbPctB",
+   "points": -16.9,
+   "min": 20,
+   "max": 40
+  },
+  {
+   "rank": 66,
+   "label": "40 and up",
+   "indicator": "adx14",
+   "points": -17.3,
+   "min": 40
+  },
+  {
+   "rank": 67,
+   "label": "3.5–4%",
+   "indicator": "premiumPctOfStock",
+   "points": -17.5,
+   "min": 3.5,
+   "max": 4
+  },
+  {
+   "rank": 68,
+   "label": "1–1.25",
+   "indicator": "beta252",
+   "points": -18.2,
+   "min": 1,
+   "max": 1.25
+  },
+  {
+   "rank": 69,
+   "label": "60–65",
+   "indicator": "entryRsi90",
+   "points": -19,
+   "min": 60,
+   "max": 65
+  },
+  {
+   "rank": 70,
+   "label": "Under 3%",
+   "indicator": "premiumPctOfStock",
+   "points": -19.1,
+   "max": 3
+  },
+  {
+   "rank": 71,
+   "label": "0.5–0.75×",
+   "indicator": "rvol",
+   "points": -19.2,
+   "min": 0.5,
+   "max": 0.75
+  },
+  {
+   "rank": 72,
+   "label": "−2% to +2%",
+   "indicator": "alpha21",
+   "points": -19.3,
+   "min": -2,
+   "max": 2
+  },
+  {
+   "rank": 73,
+   "label": "40–60",
+   "indicator": "bbPctB",
+   "points": -19.4,
+   "min": 40,
+   "max": 60
+  },
+  {
+   "rank": 74,
+   "label": "Under 45",
+   "indicator": "entryRsi90",
+   "points": -19.7,
+   "max": 45
+  },
+  {
+   "rank": 75,
+   "label": "10 to 30",
+   "indicator": "ivMinusHv",
+   "points": -19.8,
+   "min": 10,
+   "max": 30
+  },
+  {
+   "rank": 76,
+   "label": "30–40",
+   "indicator": "adx14",
+   "points": -19.9,
+   "min": 30,
+   "max": 40
+  },
+  {
+   "rank": 77,
+   "label": "SPY above both",
+   "indicator": "spyRegime",
+   "points": -20,
+   "equals": "above_both"
+  },
+  {
+   "rank": 78,
+   "label": "1.00 to 3.00",
+   "indicator": "macdDaily",
+   "points": -20,
+   "min": 1,
+   "max": 3
+  },
+  {
+   "rank": 79,
+   "label": "10 to 20",
+   "indicator": "relSpy90",
+   "points": -20,
+   "min": 10,
+   "max": 20
+  },
+  {
+   "rank": 80,
+   "label": "−5% to −2%",
+   "indicator": "alpha21",
+   "points": -20.4,
+   "min": -5,
+   "max": -2
+  },
+  {
+   "rank": 81,
+   "label": "60–70",
+   "indicator": "entryRsi14",
+   "points": -20.5,
+   "min": 60,
+   "max": 70
+  },
+  {
+   "rank": 82,
+   "label": "60–70",
+   "indicator": "rsiSmoothedDaily",
+   "points": -20.5,
+   "min": 60,
+   "max": 70
+  },
+  {
+   "rank": 83,
+   "label": "−10 to −5",
+   "indicator": "relSpy20",
+   "points": -20.6,
+   "min": -10,
+   "max": -5
+  },
+  {
+   "rank": 84,
+   "label": "Under 15",
+   "indicator": "fearGreed",
+   "points": -20.7,
+   "max": 15
+  },
+  {
+   "rank": 85,
+   "label": "0 to 1σ",
+   "indicator": "vwap20Sigma",
+   "points": -20.8,
+   "min": 0,
+   "max": 1
+  },
+  {
+   "rank": 86,
+   "label": "Under 15",
+   "indicator": "adx14",
+   "points": -21,
+   "max": 15
+  },
+  {
+   "rank": 87,
+   "label": "20–40",
+   "indicator": "ivRankMacd",
+   "points": -21.2,
+   "min": 20,
+   "max": 40
+  },
+  {
+   "rank": 88,
+   "label": "Under 25%",
+   "indicator": "entryIv",
+   "points": -21.2,
+   "max": 25
+  },
+  {
+   "rank": 89,
+   "label": "45–50",
+   "indicator": "rsiSmoothedDaily",
+   "points": -21.2,
+   "min": 45,
+   "max": 50
+  },
+  {
+   "rank": 90,
+   "label": "50–60%",
+   "indicator": "entryIv",
+   "points": -21.3,
+   "min": 50,
+   "max": 60
+  },
+  {
+   "rank": 91,
+   "label": "$50–200B",
+   "indicator": "marketCapSpy",
+   "points": -21.7,
+   "min": 50000000000,
+   "max": 200000000000
+  },
+  {
+   "rank": 92,
+   "label": "0.75–1×",
+   "indicator": "rvol",
+   "points": -21.8,
+   "min": 0.75,
+   "max": 1
+  },
+  {
+   "rank": 93,
+   "label": "$10–50B",
+   "indicator": "marketCapSpy",
+   "points": -21.8,
+   "min": 10000000000,
+   "max": 50000000000
+  },
+  {
+   "rank": 94,
+   "label": "Above 200, below 50",
+   "indicator": "trend50200",
+   "points": -22.1,
+   "equals": "above200Only"
+  },
+  {
+   "rank": 95,
+   "label": "3–3.5%",
+   "indicator": "premiumPctOfStock",
+   "points": -22.8,
+   "min": 3,
+   "max": 3.5
+  },
+  {
+   "rank": 96,
+   "label": "+5% to +10%",
+   "indicator": "alpha21",
+   "points": -23.2,
+   "min": 5,
+   "max": 10
+  },
+  {
+   "rank": 97,
+   "label": "Under 20",
+   "indicator": "ivRankMacd",
+   "points": -23.6,
+   "max": 20
+  },
+  {
+   "rank": 98,
+   "label": "25–30",
+   "indicator": "adx14",
+   "points": -23.9,
+   "min": 25,
+   "max": 30
+  },
+  {
+   "rank": 99,
+   "label": "20–40",
+   "indicator": "stochK52",
+   "points": -23.9,
+   "min": 20,
+   "max": 40
+  },
+  {
+   "rank": 100,
+   "label": "0 to 10",
+   "indicator": "relSpy90",
+   "points": -24,
+   "min": 0,
+   "max": 10
+  },
+  {
+   "rank": 101,
+   "label": "1σ to 2σ",
+   "indicator": "vwap20Sigma",
+   "points": -24,
+   "min": 1,
+   "max": 2
+  },
+  {
+   "rank": 102,
+   "label": "40–50%",
+   "indicator": "entryIv",
+   "points": -24,
+   "min": 40,
+   "max": 50
+  },
+  {
+   "rank": 103,
+   "label": "90 and up",
+   "indicator": "stochK52",
+   "points": -24.2,
+   "min": 90
+  },
+  {
+   "rank": 104,
+   "label": "Above both",
+   "indicator": "trend50200",
+   "points": -25.4,
+   "equals": "aboveBoth"
+  },
+  {
+   "rank": 105,
+   "label": "80–100",
+   "indicator": "bbPctB",
+   "points": -25.8,
+   "min": 80,
+   "max": 100
+  },
+  {
+   "rank": 106,
+   "label": "1.5–2",
+   "indicator": "beta252",
+   "points": -26.2,
+   "min": 1.5,
+   "max": 2
+  },
+  {
+   "rank": 107,
+   "label": "Under 35",
+   "indicator": "rsiSmoothedDaily",
+   "points": -26.3,
+   "max": 35
+  },
+  {
+   "rank": 108,
+   "label": "80–90",
+   "indicator": "stochK52",
+   "points": -26.4,
+   "min": 80,
+   "max": 90
+  },
+  {
+   "rank": 109,
+   "label": "1–1.5×",
+   "indicator": "rvol",
+   "points": -26.9,
+   "min": 1,
+   "max": 1.5
+  },
+  {
+   "rank": 110,
+   "label": "70 and up",
+   "indicator": "rsiSmoothedDaily",
+   "points": -28.6,
+   "min": 70
+  },
+  {
+   "rank": 111,
+   "label": "No reading",
+   "indicator": "ivRankMacd",
+   "points": -28.9,
+   "missing": true
+  },
+  {
+   "rank": 112,
+   "label": "50–55",
+   "indicator": "entryRsi90",
+   "points": -28.9,
+   "min": 50,
+   "max": 55
+  },
+  {
+   "rank": 113,
+   "label": "No reading",
+   "indicator": "fearGreed",
+   "points": -29.7,
+   "missing": true
+  },
+  {
+   "rank": 114,
+   "label": "−1.00 to 0",
+   "indicator": "macdDaily",
+   "points": -30.1,
+   "min": -1,
+   "max": 0
+  },
+  {
+   "rank": 115,
+   "label": "7% and up",
+   "indicator": "premiumPctOfStock",
+   "points": -31,
+   "min": 7
+  },
+  {
+   "rank": 116,
+   "label": "0.075 to 0.15",
+   "indicator": "macdSlopeDaily",
+   "points": -31.6,
+   "min": 0.075,
+   "max": 0.15
+  },
+  {
+   "rank": 117,
+   "label": "Under 30",
+   "indicator": "entryRsi14",
+   "points": -31.6,
+   "max": 30
+  },
+  {
+   "rank": 118,
+   "label": "0 to 10",
+   "indicator": "ivMinusHv",
+   "points": -31.6,
+   "min": 0,
+   "max": 10
+  },
+  {
+   "rank": 119,
+   "label": "−0.05 to 0",
+   "indicator": "macdSlopeDaily",
+   "points": -32.4,
+   "min": -0.05,
+   "max": 0
+  },
+  {
+   "rank": 120,
+   "label": "15–20",
+   "indicator": "adx14",
+   "points": -32.4,
+   "min": 15,
+   "max": 20
+  },
+  {
+   "rank": 121,
+   "label": "Under −30 pts",
+   "indicator": "ivMinusHv",
+   "points": -32.8,
+   "max": -30
+  },
+  {
+   "rank": 122,
+   "label": "60–80",
+   "indicator": "stochK52",
+   "points": -33.5,
+   "min": 60,
+   "max": 80
+  },
+  {
+   "rank": 123,
+   "label": "4–5%",
+   "indicator": "premiumPctOfStock",
+   "points": -35.1,
+   "min": 4,
+   "max": 5
+  },
+  {
+   "rank": 124,
+   "label": "70 and up",
+   "indicator": "entryRsi14",
+   "points": -35.6,
+   "min": 70
+  },
+  {
+   "rank": 125,
+   "label": "0 to 1.00",
+   "indicator": "macdDaily",
+   "points": -35.7,
+   "min": 0,
+   "max": 1
+  },
+  {
+   "rank": 126,
+   "label": "+10% and up",
+   "indicator": "alpha21",
+   "points": -36.6,
+   "min": 10
+  },
+  {
+   "rank": 127,
+   "label": "10 pts and up",
+   "indicator": "relSpy20",
+   "points": -37.3,
+   "min": 10
+  },
+  {
+   "rank": 128,
+   "label": "2–2.5",
+   "indicator": "beta252",
+   "points": -38.2,
+   "min": 2,
+   "max": 2.5
+  },
+  {
+   "rank": 129,
+   "label": "0 to 0.075",
+   "indicator": "macdSlopeDaily",
+   "points": -39.4,
+   "min": 0,
+   "max": 0.075
+  },
+  {
+   "rank": 130,
+   "label": "60–80",
+   "indicator": "fearGreed",
+   "points": -41.6,
+   "min": 60,
+   "max": 80
+  },
+  {
+   "rank": 131,
+   "label": "0.75–1",
+   "indicator": "beta252",
+   "points": -43.7,
+   "min": 0.75,
+   "max": 1
+  },
+  {
+   "rank": 132,
+   "label": "65 and up",
+   "indicator": "entryRsi90",
+   "points": -44.5,
+   "min": 65
+  },
+  {
+   "rank": 133,
+   "label": "60–80%",
+   "indicator": "entryIv",
+   "points": -47.7,
+   "min": 60,
+   "max": 80
+  },
+  {
+   "rank": 134,
+   "label": "$500B–1T",
+   "indicator": "marketCapSpy",
+   "points": -49.5,
+   "min": 500000000000,
+   "max": 1000000000000
+  },
+  {
+   "rank": 135,
+   "label": "1.5–2×",
+   "indicator": "rvol",
+   "points": -49.5,
+   "min": 1.5,
+   "max": 2
+  },
+  {
+   "rank": 136,
+   "label": "30 to 50",
+   "indicator": "relSpy90",
+   "points": -50.2,
+   "min": 30,
+   "max": 50
+  },
+  {
+   "rank": 137,
+   "label": "70–90",
+   "indicator": "ivRankMacd",
+   "points": -52.2,
+   "min": 70,
+   "max": 90
+  },
+  {
+   "rank": 138,
+   "label": "50 pts and up",
+   "indicator": "relSpy90",
+   "points": -55.6,
+   "min": 50
+  },
+  {
+   "rank": 139,
+   "label": "No reading",
+   "indicator": "ivMinusHv",
+   "points": -62,
+   "missing": true
+  },
+  {
+   "rank": 140,
+   "label": "SPY below both",
+   "indicator": "spyRegime",
+   "points": -67.5,
+   "equals": "below_both"
+  },
+  {
+   "rank": 141,
+   "label": "30 pts and up",
+   "indicator": "ivMinusHv",
+   "points": -87.3,
+   "min": 30
+  },
+  {
+   "rank": 142,
+   "label": "6–7%",
+   "indicator": "premiumPctOfStock",
+   "points": -88.1,
+   "min": 6,
+   "max": 7
+  },
+  {
+   "rank": 143,
+   "label": "Under $10B",
+   "indicator": "marketCapSpy",
+   "points": -92.8,
+   "max": 10000000000
+  },
+  {
+   "rank": 144,
+   "label": "15–20",
+   "indicator": "fearGreed",
+   "points": -130.1,
+   "min": 15,
+   "max": 20
+  },
+  {
+   "rank": 145,
+   "label": "90 and up",
+   "indicator": "ivRankMacd",
+   "points": -242.6,
+   "min": 90
+  }
+ ]
+}

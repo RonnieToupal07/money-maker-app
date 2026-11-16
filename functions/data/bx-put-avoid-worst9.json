@@ -1,0 +1,91 @@
+{
+ "description": "The 9 put indicator groups with the lowest return on margin per year in the 2026-11-13 checkpoint run (groups with 10+ puts), worst first; puts in any of them are skipped (config.bxScoreSizedStrategy.putAvoidFile).",
+ "groups": [
+  {
+   "rank": 29,
+   "label": "No reading",
+   "indicator": "ivMinusHv",
+   "points": 58.7,
+   "missing": true,
+   "romAnn": 0.0909,
+   "puts": 78
+  },
+  {
+   "rank": 33,
+   "label": "\u22120.15 to \u22120.05",
+   "indicator": "macdSlopeDaily",
+   "points": 57,
+   "min": -0.15,
+   "max": -0.05,
+   "romAnn": 0.0958,
+   "puts": 319
+  },
+  {
+   "rank": 76,
+   "label": "$500B\u20131T",
+   "indicator": "marketCapSpy",
+   "points": 42,
+   "min": 500000000000,
+   "max": 1000000000000,
+   "romAnn": 0.1374,
+   "puts": 292
+  },
+  {
+   "rank": 108,
+   "label": "Under 25%",
+   "indicator": "entryIv",
+   "points": 30.4,
+   "max": 25,
+   "romAnn": 0.1896,
+   "puts": 640
+  },
+  {
+   "rank": 109,
+   "label": "Under 3%",
+   "indicator": "premiumPctOfStock",
+   "points": 29.1,
+   "max": 3,
+   "romAnn": 0.2468,
+   "puts": 776
+  },
+  {
+   "rank": 60,
+   "label": "3.5\u20134%",
+   "indicator": "premiumPctOfStock",
+   "points": 48.4,
+   "min": 3.5,
+   "max": 4,
+   "romAnn": 0.2484,
+   "puts": 253
+  },
+  {
+   "rank": 16,
+   "label": "60\u201365",
+   "indicator": "entryRsi90",
+   "points": 68.9,
+   "min": 60,
+   "max": 65,
+   "romAnn": 0.2788,
+   "puts": 206
+  },
+  {
+   "rank": 90,
+   "label": "45\u201350",
+   "indicator": "rsiSmoothedDaily",
+   "points": 37.8,
+   "min": 45,
+   "max": 50,
+   "romAnn": 0.2874,
+   "puts": 395
+  },
+  {
+   "rank": 106,
+   "label": "65 and up",
+   "indicator": "entryRsi90",
+   "points": 31,
+   "min": 65,
+   "romAnn": 0.2925,
+   "puts": 32
+  }
+ ]
+}
